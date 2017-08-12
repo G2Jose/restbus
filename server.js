@@ -16,7 +16,7 @@ const setKey = (key, val, expiry = 5) => {
 	let str = ''
 	if (typeof val === 'string') str = val;
 	else str = JSON.stringify(val);
-	redisClient.setex(key, expiry, str);
+	redisClient.set(key, str, 'EX', expiry);
 }
 const corsMiddleware = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 	})
 });
 
-app.use('/', rb.app);
+app.use('/', rb.middleware());
 
 app.listen(3000);
 
